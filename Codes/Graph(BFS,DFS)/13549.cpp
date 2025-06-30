@@ -1,0 +1,89 @@
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+#include <queue>
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <list>
+#include <utility>
+
+#define INF 1e8
+#define limit 100001
+
+using namespace std;
+
+class Alg {
+private:
+    int dp[limit] = {0};
+    //int cnt[limit] = {0};
+    int start, end;
+    
+public:
+    void run();
+    
+private:
+    void init_data();
+    void get_dist();
+    bool is_out_of_bound(int num);
+};
+
+int main(void){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    
+    Alg* alg = new Alg;
+    alg->run();
+}
+
+void Alg::run() {
+    
+    cin >> start >> end;
+    get_dist();
+    cout << dp[end];
+}
+
+void Alg::get_dist() {
+    list<int> check_list, tmp_list;
+    int check_loc, next;
+    bool reached_end = false;
+    
+    fill(dp, dp + limit, INF);
+    tmp_list.push_back(start);
+    dp[start] = 0;
+    
+    while(!tmp_list.empty() and !reached_end) {
+        check_list = tmp_list;
+        tmp_list.clear();
+        
+        while(!check_list.empty()) {
+            check_loc = check_list.front();
+            check_list.pop_front();
+            
+            if(check_loc == end) { reached_end = true; return; }
+            
+            for(int i = 0; i < 3; i++) {
+                switch (i) {
+                    case 0:     next = check_loc - 1;   break;
+                    case 1:     next = check_loc + 1;   break;
+                    default :   next = 2 * check_loc;   break;
+                }
+                
+                if(is_out_of_bound(next)) { continue; }
+                if(next == end) { reached_end = true; }
+                
+                if (dp[next] > dp[check_loc] + 1) {
+                    dp[next] = (i == 2) ? dp[check_loc] : dp[check_loc] + 1;
+                    tmp_list.push_back(next);
+                }
+                else if (i == 2 && dp[next] >= dp[check_loc] + 1) {
+                    dp[next] = dp[check_loc];
+                    tmp_list.push_back(next);
+                }
+            }
+        }
+    }
+}
+
+bool Alg::is_out_of_bound(int num) { return num < 0 or limit < num; }
