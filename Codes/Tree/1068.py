@@ -1,69 +1,26 @@
-
-
 class Alg:
-    class Node:
-        def __init__(self, num, parent):
-            self.parent = parent
-            self.num = num
-            self.left = None
-            self.right = None
+    def solve(self) :
+        size = int(input())
+        parents = list(map(int, input().split()))
+        remove_node = int(input())
 
-    def __init__(self):
-        self.num_of_nodes = int(input())
-        self.nodes = []
-        
-        self.build_tree()
+        self.remove_branch(remove_node, parents)
+        print(self.get_leaves(parents))
 
-    def build_tree(self):
-        inputs = list(map(int, input().split()))
-        for i in range(len(inputs)):
-            self.nodes.append(self.Node(i, inputs[i]))
+    def remove_branch(self, node, parents) :
+        parents[node] = -2
+        for i in range(len(parents)) :
+            if node == parents[i]:
+                self.remove_branch(i, parents)
 
-            if inputs[i] == -1:
-                continue
-            elif self.nodes[inputs[i]].left is None:
-                self.nodes[inputs[i]].left = i
-            elif self.nodes[inputs[i]].right is None:
-                self.nodes[inputs[i]].right = i
+    def get_leaves(self, parents):
+        count = 0
 
-    def cut_tree(self, num):
-        if self.nodes[num] is None:
-            return
-        if self.nodes[num].left is not None:
-            self.cut_tree(self.nodes[num].left)
-        if self.nodes[num].right is not None:
-            self.cut_tree(self.nodes[num].right)
+        for i in range(len(parents)):
+            if parents[i] != -2 and i not in parents:
+                count += 1
 
-        self.nodes[num] = None
-
-    def count_leaves(self, num):
-        cnt = 0
-        
-        if self.nodes[num] is None:
-            return 0
-        if (self.nodes[num].left is None and self.nodes[num].right is None):
-            return 1
-        
-        if self.nodes[num].left is not None:
-            cnt += self.count_leaves(self.nodes[num].left)
-        if self.nodes[num].right is not None:
-            cnt += self.count_leaves(self.nodes[num].right)
-            
-        return cnt
-
-    def print_tree(self,num):
-        if self.nodes[num] is None:
-            return
-        print(num, end=' ')
-
-        if self.nodes[num].left is not None:
-            self.print_tree(self.nodes[num].left)
-        if self.nodes[num].right is not None:
-            self.print_tree(self.nodes[num].right)
-
+        return count
+    
 alg = Alg()
-# alg.print_tree(0)
-cut_num = int(input())
-alg.cut_tree(cut_num)
-#alg.print_tree(0)
-print(alg.count_leaves(0))
+alg.solve()
