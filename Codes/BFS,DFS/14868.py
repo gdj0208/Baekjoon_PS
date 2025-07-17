@@ -72,3 +72,4 @@ class Alg :
 
 alg = Alg()
 alg.solve()
+
