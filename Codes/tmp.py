@@ -1,19 +1,30 @@
 
-import heapq
+from itertools import combinations
 
-add = 0
+def count_all_combs(arr) :
+    count = 0
+    all_combs = []
 
-arr = []
-size_of_arr = int(input())
-for i in range(size_of_arr) :
-    arr.append(int(input()))
+    for i in range(1, len(arr)+1) :
+        all_combs.extend(list(combinations(arr, i)))
 
-heapq.heapify(arr)
-while(len(arr) != 1) :
-    first = heapq.heappop(arr)
-    second = heapq.heappop(arr)
-    sum = first + second
-    add += sum
-    heapq.heappush(arr, sum)
+    for comb in all_combs :
+        sum = 0
 
-print(add)
+        for num in comb :
+            sum += 1/num
+        
+        if 0.99 <= sum and sum <= 1.01 : 
+            count += 1
+
+    return count
+    
+
+
+count = 0
+size = int(input())
+arr = list(map(int, input().split()))
+
+# arr.sort()
+
+print(count_all_combs(arr))
