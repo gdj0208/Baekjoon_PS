@@ -1,15 +1,13 @@
 
+MAX_LENGTH = 1001
+MODULUS = 10007
 
-dp = [0] * 1000001 
-dp[0] = 0
+dp = [0] * MAX_LENGTH
 dp[1] = 1
-dp[2] = 2
-dp[3] = 4
+dp[2] = 3
 
-for i in range(4, 1000001) :
-    dp[i] = (dp[i-1] + dp[i-2] + dp[i-3]) % 1000000009
+for i in range(3, MAX_LENGTH) :
+    dp[i] = (2*dp[i-2] + dp[i-1]) % MODULUS
 
-rpt = int(input())
-for i in range(rpt):
-    num = int(input())
-    print(dp[num])
+num = int(input())
+print(dp[num])
