@@ -28,6 +28,5 @@ def find_num(list, list_size, num_dvd) :
 
 num_arr, num_dvd = map(int, input().split())
 arr = list(map(int, input().split()))
-arr.sort()
 
 print(find_num(arr, num_arr, num_dvd))
