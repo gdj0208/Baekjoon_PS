@@ -1,33 +1,21 @@
-
 import sys
 
-def get_dvd_req(list, max):
-    sum = 0
-    cnt = 1
-    for num in list :
-        if sum + num > max :
-            cnt += 1
-            sum = 0
-        sum += num
-    return cnt
+total, win = map(int, sys.stdin.readline().split())
+rate = (win * 100) // total
 
+start = 1
+end = total
 
-def find_num(list, list_size, num_dvd) :
-    start = max(list)
-    end = sum(list)
-
+if rate >= 99 :
+    print(-1)
+else :
     while(start <= end) :
         mid = (start + end) // 2
-        dvd_req = get_dvd_req(list, mid)
+        cur_rate = ((win + mid) *100) // (total + mid) 
 
-        if dvd_req > num_dvd :
-            start = mid + 1
-        else :
+        if rate < cur_rate :
+            ans = mid
             end = mid - 1
-    return start
-
-num_arr, num_dvd = map(int, input().split())
-arr = list(map(int, input().split()))
-arr.sort()
-
-print(find_num(arr, num_arr, num_dvd))
+        else :
+            start = mid + 1
+    print(ans)
