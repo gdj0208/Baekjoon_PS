@@ -7,7 +7,8 @@ class Alg :
         self.parent = [i for i in range(1000001)]
         self.size = [1 for i in range(1000001)]
 
-    def get_root(self, num):if self.parent[num] == num:
+    def get_root(self, num):
+        if self.parent[num] == num:
             return num
         self.parent[num] = self.get_root(self.parent[num])
         return self.parent[num]
