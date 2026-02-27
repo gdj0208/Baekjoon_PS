@@ -1,4 +1,3 @@
-
 def paint(matrix, is_blank, size, y, x):
     if(size == 1) :
         matrix[y][x] = is_blank
