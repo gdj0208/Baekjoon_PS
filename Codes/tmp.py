@@ -1,30 +1,20 @@
 
-ans = 0
+num = int(input())
+if num <= 9 : 
+    print(1)
+else :
+    is_odd = num%2
 
-def make_sum_list(my_list, div_num) :
-    global ans
-    total_sum = 0
-    sum_list = [0] * div_num
+    if num%9 == 0:
+        print(num // 9)
+    else :
+        if is_odd :
+            print(num // 9 + 1)
+        else :
+            print(num // 9)
 
-    for n in my_list :
-        total_sum = (total_sum + n) % div_num
-        if total_sum == 0:
-            ans += 1
-        sum_list[total_sum] += 1
 
-    return sum_list
-
-def get_cnt(list, size, div_num) :
-    global ans
-    for cnt in list :
-        if cnt >= 2:
-            ans += (cnt * (cnt-1))//2
-
-def solve() :
-    size, div_num = map(int, input().split())
-    my_list = list(map(int, input().split()))
-    sum_list = make_sum_list(my_list, div_num)
-    get_cnt(sum_list, size, div_num)
-    print(ans)
-
-solve()
+"""
+몫 홀 : +2
+몫 짝 : +1
+"""
