@@ -1,67 +1,44 @@
-import copy
-from collections import deque
+
 from itertools import combinations
+import sys
 
-def make_map(height, width):
-    my_map = []
-    empty_spaces = []
-    virus_list = []
-    for y in range(height):
-        row = list(map(int, input().split()))
-        for x in range(width):
-            if row[x] == 0:
-                empty_spaces.append((y, x))  # 빈칸 좌표 저장
-            elif row[x] == 2:
-                virus_list.append((y, x))    # 바이러스 좌표 저장
-        my_map.append(row)
-    return my_map, empty_spaces, virus_list
+def get_teams(players, team_size) :
+    all_players = set(players)
+    results = []
 
-def run_bfs(tmp_map, height, width, virus_list):
-    move_y = [-1, 1, 0, 0]
-    move_x = [0, 0, -1, 1]
-    
-    queue = deque(virus_list)
-    
-    while queue:
-        cur_y, cur_x = queue.popleft() 
+    for team_1 in combinations(players, team_size) :
+        team_a = set(team_1)
+        team_b = all_players - team_a
+        results.append((sorted(list(team_a)), sorted(list(team_b))))
 
-        for i in range(4):
-            next_y = cur_y + move_y[i]
-            next_x = cur_x + move_x[i]
+    return results
 
-            if 0 <= next_y < height and 0 <= next_x < width:
-                if tmp_map[next_y][next_x] == 0:
-                    tmp_map[next_y][next_x] = 2
-                    queue.append((next_y, next_x))
-
-def count_rooms(tmp_map, height, width):
-    cnt = 0
-    for y in range(height):
-        for x in range(width):
-            if tmp_map[y][x] == 0:
-                cnt += 1
-    return cnt
+def get_team_score(matrix, players) :
+    sum = 0
+    for team in combinations(players, 2) :
+        #print("P0 : ", team[0], "P1 : ", team[1])
+        sum += (matrix[team[0]][team[1]] + matrix[team[1]][team[0]])
+    return sum
 
 
+N = int(input())
+players = list(i for i in range(N))
+matrix = [[0] * N] * N
 
-height, width = map(int, input().split())
-original_map, empty_spaces, virus_list = make_map(height, width)
+for y in range(N) :
+    matrix[y] = list(map(int, input().split()))
 
-max_room = 0
+teams = get_teams(players, N//2)
 
-for walls in combinations(empty_spaces, 3):
-    tmp_map = copy.deepcopy(original_map)
-    
-    # 벽 3개 세우기
-    for w_y, w_x in walls:
-        tmp_map[w_y][w_x] = 1
-    
-    # 바이러스 퍼뜨리기
-    run_bfs(tmp_map, height, width, virus_list)
-    
-    # 안전 영역 계산 및 최댓값 갱신
-    room_cnt = count_rooms(tmp_map, height, width)
-    if room_cnt > max_room:
-        max_room = room_cnt
+min = sys.maxsize
+for i, (team_a, team_b) in enumerate(teams) :
+    score_a = get_team_score(matrix, team_a)
+    #print("Team A : ", score_a)
 
-print(max_room)
+    score_b = get_team_score(matrix, team_b)
+    #print("Team B : ", score_b)
+
+    diff = abs(score_a - score_b)
+    min = diff if diff < min else min
+
+print(min)
