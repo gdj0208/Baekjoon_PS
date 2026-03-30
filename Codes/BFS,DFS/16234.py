@@ -1,4 +1,3 @@
-
 def run_bfs(board, check_list, size, L, R, visit) :
     dy = [-1, 0, 1, 0]
     dx = [0, 1, 0, -1]
