@@ -1,4 +1,3 @@
-
 N = int(input())
 dp = [[[0 for _ in range(1024)] for _ in range(10)] for _ in range(N+1)]
 
