@@ -1,23 +1,19 @@
 
-N = int(input())
-dp = [[[0 for _ in range(1024)] for _ in range(10)] for _ in range(N+1)]
+def solution(players, callings):
+    answer = []
+    runners = {player : i for i, player in enumerate(players)}
 
-for i in range(1,10) :
-    dp[1][i][1<<i] = 1
+    for call in callings :
+        p_idx = runners[call]
+        front_player = players[p_idx-1]
+        players[p_idx-1], players[p_idx] =players[p_idx], players[p_idx-1]
 
-for i in range(2, N + 1):
-    for j in range(10):
-        for k in range(1024):
-            
-            if j > 0:
-                dp[i][j][k | (1 << j)] = (dp[i][j][k | (1 << j)] + dp[i-1][j-1][k]) % 1000000000
-                
-            if j < 9:
-                dp[i][j][k | (1 << j)] = (dp[i][j][k | (1 << j)] + dp[i-1][j+1][k]) % 1000000000
+        runners[call] -= 1
+        runners[front_player] += 1
+    answer = players
 
-ans = 0
-for j in range(10):
-    ans += dp[N][j][1023]
-    ans %= 1000000000
+    return answer
 
-print(ans)
+players = ["mumu", "soe", "poe", "kai", "mine"]
+callings = ["kai", "kai", "mine", "mine"]
+print(solution(players, callings))

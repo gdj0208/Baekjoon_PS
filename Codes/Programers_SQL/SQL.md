@@ -1,7 +1,0 @@
-
-# 🗂️ SQL 폴더
-
-### 개요
-- 이 폴더는 프로그래머스(https://programmers.co.kr/)에 등록된 SQL 문제들의 풀이들입니다.
-- 이 파일들의 파일 번호는 해당 문제의 URL에 있는 마지막 번호를 기반으로 이름지었습니다. 
-    - 예시 : https://school.programmers.co.kr/learn/courses/30/lessons/301650 -> 301650.sql
